@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pancono Mini Wallet</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase_config.js"></script>
+  <style>
+    body { font-family: Arial; margin: 20px; }
+    .wallet-box { border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h2>Pancono Mini Wallet</h2>
+  <div class="wallet-box">
+    <p><b>Wallet ID:</b> <span id="wallet_id">Loading...</span></p>
+    <p><b>Balance:</b> <span id="balance">Loading...</span> PANCA</p>
+    <p><b>Referral Code:</b> <span id="referral_code">Loading...</span></p>
+    <button onclick="exportKey()">Export Private Key</button>
+  </div>
+
+  <script>
+    const db = firebase.firestore();
+
+    async function loadWallet(telegram_id) {
+      const userDoc = await db.collection("users").doc(telegram_id).get();
+      if(userDoc.exists){
+        const data = userDoc.data();
+        document.getElementById("wallet_id").innerText = data.wallet_id;
+        document.getElementById("balance").innerText = data.panc_balance;
+        document.getElementById("referral_code").innerText = data.referral_code;
+      }
+    }
+
+    function exportKey(){
+      alert("Private key export will be implemented here.");
+    }
+
+    // TODO: Replace with Telegram WebApp init to get telegram_id
+    loadWallet("SAMPLE_TELEGRAM_ID");
+  </script>
+</body>
+</html>
